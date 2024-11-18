@@ -1,9 +1,13 @@
 import { UserRepository } from '../user/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
+import { Payload } from './security/payload.interface';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../user/entities/user.entity';
 export declare class AuthService {
     private userRepository;
-    constructor(userRepository: UserRepository);
+    private jwtService;
+    constructor(userRepository: UserRepository, jwtService: JwtService);
     transformPassword(user: CreateUserDto): Promise<void>;
     register(createUserDto: CreateUserDto): Promise<{
         id: number;
@@ -14,11 +18,7 @@ export declare class AuthService {
         userAddress: string;
     }>;
     login(loginDto: LoginDto): Promise<{
-        id: number;
-        userId: string;
-        userName: string;
-        userEmail: string;
-        userPhone: string;
-        userAddress: string;
-    }>;
+        accessToken: string;
+    } | undefined>;
+    tokenValidateUser(payload: Payload): Promise<User>;
 }

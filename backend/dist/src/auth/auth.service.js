@@ -13,9 +13,11 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const user_repository_1 = require("../user/user.repository");
 const bcrypt = require("bcrypt");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
-    constructor(userRepository) {
+    constructor(userRepository, jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
     async transformPassword(user) {
         user.userPassword = await bcrypt.hash(user.userPassword, 10);
@@ -42,12 +44,22 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException('아이디 또는 비밀번호가 잘못되었습니다.');
         }
         const { userPassword, ...result } = user;
-        return result;
+        const payload = {
+            userId: user.userId,
+            userName: user.userName,
+        };
+        return {
+            accessToken: this.jwtService.sign(payload),
+        };
+    }
+    async tokenValidateUser(payload) {
+        return await this.userRepository.findByUserId(payload.userId);
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository])
+    __metadata("design:paramtypes", [user_repository_1.UserRepository,
+        jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

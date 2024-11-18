@@ -3,10 +3,16 @@ import { UserRepository } from '../user/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
+import { Payload } from './security/payload.interface';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
-    constructor(private userRepository: UserRepository) {}
+    constructor(
+        private userRepository: UserRepository,
+        private jwtService: JwtService,
+    ) {}
 
     async transformPassword(user : CreateUserDto): Promise<void> {
         user.userPassword = await bcrypt.hash(
@@ -32,7 +38,7 @@ export class AuthService {
         return result;
     }
 
-    async login(loginDto: LoginDto) {
+    async login(loginDto: LoginDto): Promise<{ accessToken: string } | undefined> {
         const user = await this.userRepository.findByUserId(loginDto.userId);
         // 1. 먼저 유저 존재 여부 체크
         if (!user) {
@@ -52,7 +58,19 @@ export class AuthService {
 
         // 4. 비밀번호 검증 성공 시 유저 정보 반환
         const { userPassword, ...result } = user;
-        return result;
+
+        const payload: Payload = {
+            userId: user.userId,
+            userName: user.userName,
+        }
+
+        return {
+            accessToken: this.jwtService.sign(payload),
+        };
     }
 
+
+    async tokenValidateUser(payload: Payload): Promise<User> {
+        return await this.userRepository.findByUserId(payload.userId);
+    }
 }
