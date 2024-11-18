@@ -5,6 +5,9 @@ import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { PassportJwtStrategy } from './security/passport.jwt.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserAuthorityRepository } from './repository/user-authority.repository';
+import { UserAuthority } from './entity/user-authority.entity';
 
 @Module({
     imports: [UserModule, 
@@ -12,9 +15,11 @@ import { PassportJwtStrategy } from './security/passport.jwt.strategy';
         secret: "TestSecretKey",
         signOptions: { expiresIn: '300s' },
       }),
-      PassportModule
+      PassportModule,
+      TypeOrmModule.forFeature([UserAuthority])
     ],
     controllers: [AuthController],
-    providers: [AuthService, PassportJwtStrategy]
+    providers: [AuthService, PassportJwtStrategy, UserAuthorityRepository],
+    exports: [UserAuthorityRepository]
 })
 export class AuthModule {}

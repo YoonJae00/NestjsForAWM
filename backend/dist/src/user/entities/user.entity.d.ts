@@ -6,4 +6,5 @@ export declare class User {
     userEmail: string;
     userPhone: string;
     userAddress: string;
+    authorities: any[];
 }

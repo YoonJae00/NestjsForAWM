@@ -18,6 +18,9 @@ const auth_service_1 = require("./auth.service");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const login_dto_1 = require("./dto/login.dto");
 const auth_guard_1 = require("./security/auth.guard");
+const roles_guard_1 = require("./security/roles.guard");
+const role_type_1 = require("./role-type");
+const role_decorator_1 = require("./decorator/role.decorator");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -31,6 +34,10 @@ let AuthController = class AuthController {
         return res.json(jwt);
     }
     isAuthenticated(req) {
+        const user = req.user;
+        return user;
+    }
+    adminRoleCheck(req) {
         const user = req.user;
         return user;
     }
@@ -60,6 +67,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Object)
 ], AuthController.prototype, "isAuthenticated", null);
+__decorate([
+    (0, common_1.Get)('/admin-role'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, roles_guard_1.RolesGuard),
+    (0, role_decorator_1.Roles)(role_type_1.RoleType.ADMIN),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Object)
+], AuthController.prototype, "adminRoleCheck", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

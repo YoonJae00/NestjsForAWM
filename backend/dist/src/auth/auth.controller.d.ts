@@ -8,4 +8,5 @@ export declare class AuthController {
     register(req: Request, createUserDto: CreateUserDto): Promise<any>;
     login(loginDto: LoginDto, res: Response): Promise<any>;
     isAuthenticated(req: Request): any;
+    adminRoleCheck(req: Request): any;
 }

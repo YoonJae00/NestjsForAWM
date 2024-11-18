@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
-import { UserRepository } from '../user/user.repository';
+import { UserRepository } from './repository/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
@@ -59,9 +59,12 @@ export class AuthService {
         // 4. 비밀번호 검증 성공 시 유저 정보 반환
         const { userPassword, ...result } = user;
 
+        this.convertInAuthorities(user);
+
         const payload: Payload = {
             userId: user.userId,
             userName: user.userName,
+            authorities: user.authorities,
         }
 
         return {
@@ -71,6 +74,30 @@ export class AuthService {
 
 
     async tokenValidateUser(payload: Payload): Promise<User> {
-        return await this.userRepository.findByUserId(payload.userId);
+        const user = await this.userRepository.findByUserId(payload.userId);
+        this.flattenAuthorities(user);
+        return user;
+    }
+
+    private flattenAuthorities(user: any): User {
+        if(user && user.authorities) {
+            const authorities: string[] = [];
+            user.authorities.forEach(authority=> {
+                authorities.push(authority.authorityName);
+            });
+            user.authorities = authorities;
+        }
+        return user;
+    }
+
+    private convertInAuthorities(user: any): User {
+        if(user && user.authorities) {
+            const authorities: any[] = [];
+            user.authorities.forEach(authority=> {
+                authorities.push({name: authority.authorityName});
+            });
+            user.authorities = authorities;
+        }
+        return user;
     }
 }

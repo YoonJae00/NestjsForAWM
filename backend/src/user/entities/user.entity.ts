@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { UserAuthority } from '../../auth/entity/user-authority.entity';
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn()
@@ -22,4 +22,8 @@ export class User {
 
     @Column({ nullable: true })
     userAddress: string;
+
+    @OneToMany(type=>UserAuthority, userAuthority=>userAuthority.user, {eager: true})
+    authorities: any[];
+
 } 

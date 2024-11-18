@@ -1,4 +1,4 @@
-import { UserRepository } from '../user/user.repository';
+import { UserRepository } from './repository/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { Payload } from './security/payload.interface';
@@ -16,9 +16,12 @@ export declare class AuthService {
         userEmail: string;
         userPhone: string;
         userAddress: string;
+        authorities: any[];
     }>;
     login(loginDto: LoginDto): Promise<{
         accessToken: string;
     } | undefined>;
     tokenValidateUser(payload: Payload): Promise<User>;
+    private flattenAuthorities;
+    private convertInAuthorities;
 }

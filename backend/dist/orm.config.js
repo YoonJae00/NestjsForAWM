@@ -17,7 +17,7 @@ function ormConfig() {
         username: 'root',
         password: 'root',
         logging: true,
-        synchronize: commonConf.SYNCRONIZE,
+        synchronize: false,
         entities: commonConf.ENTITIES,
         migrations: commonConf.MIGRATIONS,
         migrationsRun: commonConf.MIGRATIONS_RUN,

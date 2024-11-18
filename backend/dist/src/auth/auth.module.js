@@ -14,6 +14,9 @@ const user_module_1 = require("../user/user.module");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_strategy_1 = require("./security/passport.jwt.strategy");
+const typeorm_1 = require("@nestjs/typeorm");
+const user_authority_repository_1 = require("./repository/user-authority.repository");
+const user_authority_entity_1 = require("./entity/user-authority.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -24,10 +27,12 @@ exports.AuthModule = AuthModule = __decorate([
                 secret: "TestSecretKey",
                 signOptions: { expiresIn: '300s' },
             }),
-            passport_1.PassportModule
+            passport_1.PassportModule,
+            typeorm_1.TypeOrmModule.forFeature([user_authority_entity_1.UserAuthority])
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, passport_jwt_strategy_1.PassportJwtStrategy]
+        providers: [auth_service_1.AuthService, passport_jwt_strategy_1.PassportJwtStrategy, user_authority_repository_1.UserAuthorityRepository],
+        exports: [user_authority_repository_1.UserAuthorityRepository]
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

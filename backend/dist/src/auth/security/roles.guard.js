@@ -9,27 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.RolesGuard = void 0;
 const common_1 = require("@nestjs/common");
-const user_repository_1 = require("../auth/repository/user.repository");
-let UserService = class UserService {
-    constructor(userRepository) {
-        this.userRepository = userRepository;
+const core_1 = require("@nestjs/core");
+let RolesGuard = class RolesGuard {
+    constructor(reflector) {
+        this.reflector = reflector;
     }
-    async findByUserId(userId) {
-        const user = await this.userRepository.findByUserId(userId);
-        if (!user) {
-            throw new common_1.NotFoundException('사용자를 찾을 수 없습니다.');
+    canActivate(context) {
+        const roles = this.reflector.get('roles', context.getHandler());
+        if (!roles) {
+            return true;
         }
-        return user;
-    }
-    async findAll() {
-        return await this.userRepository.find();
+        const request = context.switchToHttp().getRequest();
+        const user = request.user;
+        return user && user.authorities && user.authorities.some(role => roles.includes(role));
     }
 };
-exports.UserService = UserService;
-exports.UserService = UserService = __decorate([
+exports.RolesGuard = RolesGuard;
+exports.RolesGuard = RolesGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository])
-], UserService);
-//# sourceMappingURL=user.service.js.map
+    __metadata("design:paramtypes", [core_1.Reflector])
+], RolesGuard);
+//# sourceMappingURL=roles.guard.js.map

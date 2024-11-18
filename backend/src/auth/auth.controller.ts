@@ -4,6 +4,10 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from './security/auth.guard';
+import { RolesGuard } from './security/roles.guard';
+import { RoleType } from './role-type';
+import { Roles } from './decorator/role.decorator';
+
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
@@ -23,6 +27,14 @@ export class AuthController {
     @Get('/authenticated')
     @UseGuards(AuthGuard)
     isAuthenticated(@Req() req: Request): any {
+        const user: any = req.user;
+        return user;
+    }
+
+    @Get('/admin-role')
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(RoleType.ADMIN)
+    adminRoleCheck(@Req() req: Request): any {
         const user: any = req.user;
         return user;
     }

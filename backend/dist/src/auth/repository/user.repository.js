@@ -9,27 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.UserRepository = void 0;
 const common_1 = require("@nestjs/common");
-const user_repository_1 = require("../auth/repository/user.repository");
-let UserService = class UserService {
-    constructor(userRepository) {
-        this.userRepository = userRepository;
+const typeorm_1 = require("typeorm");
+const user_entity_1 = require("../../user/entities/user.entity");
+let UserRepository = class UserRepository extends typeorm_1.Repository {
+    constructor(dataSource) {
+        super(user_entity_1.User, dataSource.createEntityManager());
+        this.dataSource = dataSource;
     }
     async findByUserId(userId) {
-        const user = await this.userRepository.findByUserId(userId);
-        if (!user) {
-            throw new common_1.NotFoundException('사용자를 찾을 수 없습니다.');
-        }
-        return user;
-    }
-    async findAll() {
-        return await this.userRepository.find();
+        return this.findOne({ where: { userId } });
     }
 };
-exports.UserService = UserService;
-exports.UserService = UserService = __decorate([
+exports.UserRepository = UserRepository;
+exports.UserRepository = UserRepository = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository])
-], UserService);
-//# sourceMappingURL=user.service.js.map
+    __metadata("design:paramtypes", [typeorm_1.DataSource])
+], UserRepository);
+//# sourceMappingURL=user.repository.js.map

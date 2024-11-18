@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const user_repository_1 = require("../user/user.repository");
+const user_repository_1 = require("./repository/user.repository");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
@@ -44,16 +44,40 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException('아이디 또는 비밀번호가 잘못되었습니다.');
         }
         const { userPassword, ...result } = user;
+        this.convertInAuthorities(user);
         const payload = {
             userId: user.userId,
             userName: user.userName,
+            authorities: user.authorities,
         };
         return {
             accessToken: this.jwtService.sign(payload),
         };
     }
     async tokenValidateUser(payload) {
-        return await this.userRepository.findByUserId(payload.userId);
+        const user = await this.userRepository.findByUserId(payload.userId);
+        this.flattenAuthorities(user);
+        return user;
+    }
+    flattenAuthorities(user) {
+        if (user && user.authorities) {
+            const authorities = [];
+            user.authorities.forEach(authority => {
+                authorities.push(authority.authorityName);
+            });
+            user.authorities = authorities;
+        }
+        return user;
+    }
+    convertInAuthorities(user) {
+        if (user && user.authorities) {
+            const authorities = [];
+            user.authorities.forEach(authority => {
+                authorities.push({ name: authority.authorityName });
+            });
+            user.authorities = authorities;
+        }
+        return user;
     }
 };
 exports.AuthService = AuthService;

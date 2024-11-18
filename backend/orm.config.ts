@@ -17,7 +17,7 @@ function ormConfig(): TypeOrmModuleOptions {
         username: 'root',
         password: 'root',
         logging: true,
-        synchronize: commonConf.SYNCRONIZE,
+        synchronize: false, // 개발 환경에서는 true로 설정
         entities: commonConf.ENTITIES,
         migrations: commonConf.MIGRATIONS,
         migrationsRun: commonConf.MIGRATIONS_RUN,
