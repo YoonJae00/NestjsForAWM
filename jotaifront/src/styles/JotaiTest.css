@@ -1,0 +1,120 @@
+.jotai-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .jotai-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-primary);
+  }
+  
+  .jotai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .jotai-card {
+    background: var(--card-bg, white);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .jotai-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-header {
+    background: var(--header-bg, #f8f9fa);
+    padding: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color, rgba(0,0,0,0.1));
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .counter-text {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .primary-button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: white;
+    background: var(--primary-color, #0066ff);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .primary-button:hover {
+    background: var(--primary-hover, #0052cc);
+    transform: translateY(-2px);
+  }
+  
+  .text-input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color, rgba(0,0,0,0.1));
+    border-radius: 6px;
+    background: var(--input-bg, white);
+    color: var(--text-primary);
+  }
+  
+  .text-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.2);
+  }
+  
+  .text-display {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+  }
+  
+  /* 다크모드 */
+  .dark-mode .jotai-card {
+    background: var(--card-bg, #2d2d2d);
+  }
+  
+  .dark-mode .card-header {
+    background: var(--header-bg, #404040);
+    border-bottom-color: var(--border-color, rgba(255,255,255,0.1));
+  }
+  
+  .dark-mode .text-input {
+    background: var(--input-bg, #404040);
+    border-color: var(--border-color, rgba(255,255,255,0.1));
+    color: white;
+  }
+  
+  /* 반응형 */
+  @media (max-width: 768px) {
+    .jotai-container {
+      padding: 1rem;
+    }
+    
+    .jotai-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .jotai-grid {
+      grid-template-columns: 1fr;
+    }
+  }
