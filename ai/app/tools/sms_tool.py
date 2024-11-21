@@ -12,7 +12,7 @@ load_dotenv()
 
 class SMSTool(BaseTool):
     name: str = "sms_tool"
-    description: str = "SMS를 전송하는 도구입니다. JSON 형식으로 'phone_number'와 'message'를 포함해야 합니다. 예: {'phone_number': '01012345678', 'message': '안녕하세요'}"
+    description: str = "SMS를 전송하는 도구입니다. 한글 45자 이내로 JSON 형식으로 'phone_number'와 'message'를 포함해야 합니다. 예: {'phone_number': '01012345678', 'message': '안녕하세요'}"
 
     def _run(self, request_str: str) -> str:
         try:

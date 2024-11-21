@@ -18,6 +18,8 @@ Final Answer: 원래 질문에 대한 최종 답변
 이전 대화 요약:
 {chat_history}
 이전 대화를 참고하여 현재 질문에 답변해주세요.
+대답은 마크다운 형식으로 작성해주세요.
+한글로 작성해주세요.
 
 Question: {input}
 {agent_scratchpad}""" 

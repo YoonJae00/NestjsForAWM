@@ -4,13 +4,14 @@
   --dark-bg: #0a0a0f;
   --card-bg: #13131f;
   --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-secondary: rgba(255, 255, 255, 0.85);
   --border-glow: rgba(0, 247, 255, 0.3);
 }
 
 .home-container {
   min-height: 100vh;
   background: var(--dark-bg);
+  color: var(--text-primary);
   overflow-x: hidden;
 }
 
@@ -36,10 +37,19 @@
 
 .hero-title {
   font-size: 4.5rem;
-  line-height: 1.1;
+  line-height: 1.2;
   margin-bottom: 2rem;
   font-weight: 800;
-  text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+  color: var(--text-primary);
+  text-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+}
+
+.hero-description {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .gradient-text {
@@ -115,4 +125,87 @@
   padding: 8rem 2rem;
   background: var(--card-bg);
   margin-top: 4rem;
+}
+
+.section-title {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--text-primary);
+  text-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+}
+
+.feature-card {
+  background: rgba(19, 19, 31, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 247, 255, 0.1);
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.feature-card h3 {
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  margin: 1.5rem 0;
+}
+
+.feature-card p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.demo-description {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.cta-button, .demo-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.cta-button {
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  color: white;
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+}
+
+.demo-button {
+  background: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--neon-blue);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 247, 255, 0.5);
+}
+
+.demo-button:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 247, 255, 0.1);
+}
+
+.cta-button i, .demo-button i {
+  font-size: 1.2rem;
 }

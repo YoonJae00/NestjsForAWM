@@ -3,12 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { isDarkAtom } from '../atoms/themeAtom';
 import '../styles/Home.css';
-import { texttestAtom } from '../atoms/textAtom';
 
 const Home = () => {
   const navigate = useNavigate();
   const [isDark] = useAtom(isDarkAtom);
-  const [text2] = useAtom(texttestAtom);
   
   return (
     <div className="home-container">
@@ -16,7 +14,7 @@ const Home = () => {
         <div className="hero-content">
           <h1 className="hero-title">
             <span className="gradient-text">AI 멀티 에이전트</span>로<br />
-            더 똑똑한 답변을 받아보세요 {text2}
+            더 똑똑한 답변을 받아보세요
           </h1>
           <p className="hero-description">
             여러 AI 전문가들이 협력하여 정확하고 깊이 있는 답변을 제공합니다

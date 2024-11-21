@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { chatMessagesAtom, sendMessageAtom } from '../atoms/chatAtom';
 import '../styles/Chat.css';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 const Chat = () => {
   const [input, setInput] = useState('');
@@ -75,6 +78,16 @@ const Chat = () => {
     return tags;
   };
 
+  const isMarkdown = (text: string) => {
+    // 마크다운 형식 감지
+    return text.includes('```') || 
+           text.includes('#') || 
+           text.includes('*') || 
+           text.includes('|') ||
+           text.includes('[') ||
+           text.includes('>')
+  };
+
   return (
     <div className="auto-gpt-container">
       <div className="space-background"></div>
@@ -104,11 +117,23 @@ const Chat = () => {
               {msg.role === 'assistant' && (
                 <div className="ai-indicator">
                   <i className="bi bi-robot"></i>
-                  <div className="ai-badge">AutoGPT</div>
+                  <div className="ai-badge">Agent Model</div>
                 </div>
               )}
               <div className="message-content">
-                <div className="message-text">{msg.content}</div>
+                <div className="message-text">
+                  {isMarkdown(msg.content) ? (
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw]}
+                      className="markdown-content"
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
+                  ) : (
+                    msg.content
+                  )}
+                </div>
                 {msg.role === 'assistant' && (
                   <div className="task-tags">
                     {getTaskTags(msg.content).map((tag, i) => (
@@ -124,12 +149,17 @@ const Chat = () => {
         <form onSubmit={handleSubmit} className="command-input">
           <div className="input-wrapper">
             <i className="bi bi-terminal"></i>
-            <input
-              type="text"
+            <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="명령어를 입력하세요 (예: '비트코인 가격 조회 후 010-XXXX-XXXX로 전송')"
+              placeholder="명령어를 입력하세요 (예: '우리가게의 알바생 최적의 스케줄 제안해줘')"
               disabled={isProcessing}
+              rows={1}
+              onInput={(e) => {
+                const target = e.target as HTMLTextAreaElement;
+                target.style.height = 'auto';
+                target.style.height = `${target.scrollHeight}px`;
+              }}
             />
           </div>
           <button type="submit" disabled={isProcessing}>
